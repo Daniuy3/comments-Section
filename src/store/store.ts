@@ -12,6 +12,7 @@ type useCommentsStoreProps = {
     modal: boolean,
     activeId: SelfComment["id"],
     isReply: boolean,
+    darkTheme: boolean,
     orderData: () => void,
     changeScore: (id: SelfComment["score"], score: SelfComment["score"], isReply:boolean) => void,
     addReply: (newReply: reply) => void,
@@ -22,7 +23,8 @@ type useCommentsStoreProps = {
     removeComment: () => void,
     removeReply: () => void,
     setID: (id: SelfComment["id"]) => void,
-    setReplying: (status: boolean) => void
+    setReplying: (status: boolean) => void,
+    setDarkTheme: (status: boolean) => void
 }
 export const useCommentsStore = create<useCommentsStoreProps>()(devtools(((set) =>({
     data: [] as arrayComment,
@@ -30,6 +32,7 @@ export const useCommentsStore = create<useCommentsStoreProps>()(devtools(((set) 
     modal: false,
     isReply: false,
     activeId: 0,
+    darkTheme: true,
     fetchComments: async () => {
         const url = "../data.json";
         const {data} = await axios(url);
@@ -140,5 +143,8 @@ export const useCommentsStore = create<useCommentsStoreProps>()(devtools(((set) 
     },
     setReplying: (status: boolean) => {
         set({isReply: status})
+    },
+    setDarkTheme: (status: boolean) => {
+        set({darkTheme: status})
     }
 }))))

@@ -18,6 +18,14 @@ export default {
       lightGray: "hsl(223, 19%, 93%)",
       veryLightGray: "hsl(228, 33%, 97%)",
       white: "hsl(0, 0%, 100%)",
+
+      /* DarkMode */
+      'dark-mode': {
+        "600": "#5E618C",
+        '800': '#11212D',
+        '900': '#0d1117',
+
+    }
     }
   },
   plugins: [],

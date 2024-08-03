@@ -1,0 +1,57 @@
+
+.animation{
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+    display: grid;
+    place-items: center;
+    grid-template-areas: "iconos";
+    position: relative; /* Add this line */
+
+    &:hover{
+        cursor: pointer;
+    }
+}
+.animation img{
+    width: 40px;
+    height: 40px;
+    
+    grid-area: iconos;
+    
+    transition: rotate 1s ease, scale 1s ease;
+}
+
+.main{
+    scale: 1;
+    rotate: 0;
+}
+.secondary{
+    scale: 0;
+    rotate: 360deg;
+}
+.clip-path{
+    clip-path: circle(0% at 84% 4%);
+    @media (min-width: 768px){
+        clip-path: circle(0% at 92.2% 5.1%)
+    }
+
+    @media (min-width: 1024px){
+        clip-path: circle(0% at 90.8% 5.2%); 
+        
+    }
+
+    transition: clip-path 1s ease;
+}
+.clip-path-full{
+    clip-path: circle(200% at 84% 4%);
+
+    @media (min-width: 768px){
+        clip-path: circle(200% at 92.2% 5.1%)
+    }
+    @media (min-width: 1024px){
+        clip-path: circle(200% at 90.8% 5.2%);  
+    }
+}
+
+
+
