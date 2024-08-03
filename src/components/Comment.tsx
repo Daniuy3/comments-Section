@@ -3,6 +3,7 @@ import { useCommentsStore } from "../store/store";
 import { reply, SelfComment } from "../types";
 import {toast} from "react-toastify";
 
+import {AnimatePresence, motion} from "framer-motion";
 
 
 type CommentProps = {
@@ -96,7 +97,7 @@ function Comment({comment, replyintTo}: CommentProps) {
 return (
     <>
         
-        <div className={`${darkTheme?("bg-dark-mode-800") : ("bg-white")} px-5 rounded-lg p-5 w-full flex gap-5 transition-colors duration-300`}>
+        <div className={`${darkTheme?("bg-dark-mode-800") : ("bg-white")} px-5 rounded-lg p-5 w-full flex gap-5 transition-colors duration-300 delay-100`}>
         <div className={` flex-col justify-center gap-2 items-center py-1 px-3  rounded-lg w-11 hidden md:flex ${darkTheme? "bg-dark-mode-600" : "bg-lightGray"}`}>
                     <img
                         src="/icon-plus.svg"
@@ -104,7 +105,12 @@ return (
                         className="w-3 h-3 hover:cursor-pointer"
                         onClick={() => handleScore(comment.id, comment.score, "add")}
                     />
-                    <p className={`font-semibold ${darkTheme? "text-white" : "text-moderateBlue"}`}>{comment.score}</p>
+                    <motion.p 
+                        className={`font-semibold ${darkTheme? "text-white" : "text-moderateBlue"}`}
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}    
+                        transition={{duration: 0.5}}
+                    >{comment.score}</motion.p>
                     <img
                         src="/icon-minus.svg"
                         alt="-"
@@ -148,13 +154,22 @@ return (
                 <span className="font-semibold text-moderateBlue">
                     {replyintTo && `@${replyintTo} `}
                 </span>
+                
                 {editing ? (
                     <>
-                        <textarea id="editingText" placeholder="Edit your text here" className={`w-full ${darkTheme? "bg-dark-mode-800" : "bg-white"}`}>
+                        <motion.textarea
+                         id="editingText"
+                          placeholder="Edit your text here" 
+                          className={`w-full ${darkTheme? "bg-dark-mode-800" : "bg-white"}`}
+                            initial={{opacity: 0, scale: 0}}
+                            animate={{opacity: 1, scale: 1}}
+                            exit={{opacity: 0, scale: 0}}
+                          >
                             {comment.content}
-                        </textarea>
+                        </motion.textarea>
                     </>
                 ) : comment.content}
+            
                 
             </p>
             <div className="flex justify-between mt-5">
@@ -208,12 +223,23 @@ return (
             </div>
             </div>
         </div>
-        {replying && (
-            <form className={`${darkTheme? "bg-dark-mode-800" : "bg-white"} px-5 rounded-lg p-5 flex justify-center items-center gap-5`} onSubmit={handleSubmit}>
+        <AnimatePresence>
+            {replying && (
+            
+                <motion.form
+                className={`${darkTheme? "bg-dark-mode-800" : "bg-white"} px-5 rounded-lg p-5 flex justify-center items-center gap-5`} 
+                onSubmit={handleSubmit}
+                initial={{opacity: 0, y: -200}}
+                animate={{opacity: [0, 0 , 0 , 1], y: 0}}
+                exit={{opacity: 0, height: 0}}
+                transition={{duration: 0.5}}
+
+            >
                 <textarea name="reply" placeholder="Reply..." className={`${darkTheme? "bg-dark-mode-800" : "bg-white"}  w-1/2 text-grayishBlue`}></textarea>
                 <input type="submit" value="Reply" className=" bg-moderateBlue font-semibold py-2 px-5 mt-5 rounded-lg hover:cursor-pointer text-white" />
-            </form>
-        )}
+            </motion.form>
+           
+        )} </AnimatePresence>
     </>
 );
 }

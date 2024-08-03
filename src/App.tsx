@@ -10,6 +10,9 @@ import { reply } from "./types";
 import "./animations/animation.css"
 import AnimationDarkTheme from "./components/AnimationDarkTheme";
 
+
+import {motion} from "framer-motion";
+
 function App() {
   const fetchComments = useCommentsStore((state) => state.fetchComments);
   const addComment = useCommentsStore((state) => state.addComment);
@@ -20,6 +23,8 @@ function App() {
 
   const darkTheme = useCommentsStore((state) => state.darkTheme);
   
+
+
 
   useEffect(() => {
     fetchComments();
@@ -53,18 +58,28 @@ function App() {
   return (
     <>
       <main className="container mt-10 mx-auto text-moderateBlue ">
-        <header className=" flex items-center justify-center px-10">
+        <motion.header 
+          className=" flex items-center justify-center px-10"
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          transition={{duration: 2}}
+          >
            <h1 className="font-bold text-2xl text-center">Comments Section</h1>
            <AnimationDarkTheme />
-        </header>
-        <section className="flex flex-col gap-5 mt-10 w-full">
+        </motion.header>
+        <motion.section 
+          className="flex flex-col gap-5 mt-10 w-full"
+          initial={{opacity: 0, x: -100}}
+          animate={{opacity: 1, x: 0}}
+          transition={{duration: 0.5}}
+          >
           {data.map((comment) => (
             <>
               <Comment key={comment.id} comment={comment} />
               <Replies key={comment.user.image.webp} replies={comment.replies} />
             </>
           ))}
-        </section>
+        </motion.section>
         <section className="mt-10">
           <form className={`mt-5 cotainer mx-auto  flex justify-between p-10 items-center rounded-lg ${darkTheme? "bg-dark-mode-800" : "bg-white"}`} onSubmit={handleSubmit}>
             <textarea className={`p-3 rounded-lg w-1/2 text-darkBlue ${darkTheme? "bg-dark-mode-800" : "bg-white"}` }placeholder="Add a comment" id="textSubmit"></textarea>
