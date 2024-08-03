@@ -17,8 +17,9 @@ function Comment({comment, replyintTo}: CommentProps) {
     const showModal = useCommentsStore((state) => state.showModal);
     const setID = useCommentsStore((state) => state.setID);
     const setReply = useCommentsStore((state) => state.setReplying);
-    const currentUser = useCommentsStore((state) => state.currentUser);
 
+    const currentUser = useCommentsStore((state) => state.currentUser);
+    const darkTheme = useCommentsStore((state) => state.darkTheme);
 
     const [replying, setReplying] = useState(false); /* Valido si se esta respondiendo o no */
     const [editing, setEditing] = useState(false); /* Valido si se esta editando o no */
@@ -95,15 +96,15 @@ function Comment({comment, replyintTo}: CommentProps) {
 return (
     <>
         
-        <div className="bg-white px-5 rounded-lg p-5 w-full flex gap-5">
-        <div className=" flex-col justify-center gap-2 items-center py-1 px-3 bg-lightGray rounded-lg w-11 hidden md:flex">
+        <div className={`${darkTheme?("bg-dark-mode-800") : ("bg-white")} px-5 rounded-lg p-5 w-full flex gap-5 transition-colors duration-300`}>
+        <div className={` flex-col justify-center gap-2 items-center py-1 px-3  rounded-lg w-11 hidden md:flex ${darkTheme? "bg-dark-mode-600" : "bg-lightGray"}`}>
                     <img
                         src="/icon-plus.svg"
                         alt="+"
                         className="w-3 h-3 hover:cursor-pointer"
                         onClick={() => handleScore(comment.id, comment.score, "add")}
                     />
-                    <p className="font-semibold">{comment.score}</p>
+                    <p className={`font-semibold ${darkTheme? "text-white" : "text-moderateBlue"}`}>{comment.score}</p>
                     <img
                         src="/icon-minus.svg"
                         alt="-"
@@ -111,11 +112,11 @@ return (
                         onClick={() => handleScore(comment.id, comment.score, "sub")}
                     />
         </div>
-            <div>
+            <div className={darkTheme? "text-white" : "text-grayishBlue"}>
             <div className="flex gap-3 items-center">
                 <img src={comment.user.image.png} alt="User" className="w-12 h-12" />
-                <h2 className="text-grayishBlue font-bold text-lg">{comment.user.username}</h2>
-                <p className="text-grayishBlue">{comment.createdAt}</p>
+                <h2 className="font-bold text-lg">{comment.user.username}</h2>
+                <p >{comment.createdAt}</p>
                 {!replyintTo && (
                     <div className=" gap-2 items-center hidden md:flex hover:cursor-pointer hover:opacity-45 transition-opacity duration-300 ml-auto">
                         <img src="/icon-reply.svg" alt="Reply" className="w-3 h-3" />
@@ -143,13 +144,13 @@ return (
                     </div>
                 )}
             </div>
-            <p className="text-grayishBlue mt-5 font-normal">
+            <p className="mt-5 font-normal">
                 <span className="font-semibold text-moderateBlue">
                     {replyintTo && `@${replyintTo} `}
                 </span>
                 {editing ? (
                     <>
-                        <textarea id="editingText" placeholder="Edit your text here" className="w-full">
+                        <textarea id="editingText" placeholder="Edit your text here" className={`w-full ${darkTheme? "bg-dark-mode-800" : "bg-white"}`}>
                             {comment.content}
                         </textarea>
                     </>
@@ -157,7 +158,7 @@ return (
                 
             </p>
             <div className="flex justify-between mt-5">
-                <div className="flex gap-2 items-center py-1 px-3 bg-lightGray rounded-lg md:hidden">
+                <div className={`flex gap-2 items-center py-1 px-3 ${darkTheme? "bg-dark-mode-600" : "bg-lightGray"} rounded-lg md:hidden`}>
                     <img
                         src="/icon-plus.svg"
                         alt="+"
@@ -208,8 +209,8 @@ return (
             </div>
         </div>
         {replying && (
-            <form className="bg-white px-5 rounded-lg p-5 flex justify-center items-center gap-5" onSubmit={handleSubmit}>
-                <textarea name="reply" placeholder="Reply..." className="w-1/2 text-grayishBlue"></textarea>
+            <form className={`${darkTheme? "bg-dark-mode-800" : "bg-white"} px-5 rounded-lg p-5 flex justify-center items-center gap-5`} onSubmit={handleSubmit}>
+                <textarea name="reply" placeholder="Reply..." className={`${darkTheme? "bg-dark-mode-800" : "bg-white"}  w-1/2 text-grayishBlue`}></textarea>
                 <input type="submit" value="Reply" className=" bg-moderateBlue font-semibold py-2 px-5 mt-5 rounded-lg hover:cursor-pointer text-white" />
             </form>
         )}

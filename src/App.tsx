@@ -7,6 +7,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { reply } from "./types";
 
+import "./animations/animation.css"
+import AnimationDarkTheme from "./components/AnimationDarkTheme";
+
 function App() {
   const fetchComments = useCommentsStore((state) => state.fetchComments);
   const addComment = useCommentsStore((state) => state.addComment);
@@ -14,6 +17,9 @@ function App() {
   const data = useCommentsStore((state) => state.data);
   const currentUser = useCommentsStore((state) => state.currentUser);
   const modal = useCommentsStore((state) => state.modal);
+
+  const darkTheme = useCommentsStore((state) => state.darkTheme);
+  
 
   useEffect(() => {
     fetchComments();
@@ -43,10 +49,14 @@ function App() {
     }
   }
 
+ 
   return (
     <>
-      <main className="container mt-10 mx-auto text-moderateBlue">
-        <h1 className="text-center font-bold text-2xl">Comments Section</h1>
+      <main className="container mt-10 mx-auto text-moderateBlue ">
+        <header className=" flex items-center justify-center px-10">
+           <h1 className="font-bold text-2xl text-center">Comments Section</h1>
+           <AnimationDarkTheme />
+        </header>
         <section className="flex flex-col gap-5 mt-10 w-full">
           {data.map((comment) => (
             <>
@@ -56,14 +66,17 @@ function App() {
           ))}
         </section>
         <section className="mt-10">
-          <form className="mt-5 cotainer mx-auto bg-white flex justify-between p-10 items-center rounded-lg" onSubmit={handleSubmit}>
-            <textarea className="p-3 rounded-lg w-1/2 text-darkBlue" placeholder="Add a comment" id="textSubmit"></textarea>
+          <form className={`mt-5 cotainer mx-auto  flex justify-between p-10 items-center rounded-lg ${darkTheme? "bg-dark-mode-800" : "bg-white"}`} onSubmit={handleSubmit}>
+            <textarea className={`p-3 rounded-lg w-1/2 text-darkBlue ${darkTheme? "bg-dark-mode-800" : "bg-white"}` }placeholder="Add a comment" id="textSubmit"></textarea>
             <input type="submit" className="bg-moderateBlue text-white font-semibold py-2 px-5 mt-5 rounded-lg" value="Post" />
           </form>
         </section>
         <ToastContainer />
         {modal && <Modal />}
       </main>
+      
+      <div className={` absolute inset-0 -z-10 bg-dark-mode-900 ${darkTheme? "clip-path clip-path-full" : "clip-path"}`}
+      ></div>
     </>
   );
 }
